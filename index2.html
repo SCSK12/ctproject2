@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>타이틀: 자물쇠 비밀번호 풀기</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    h1 { color: #2c3e50; }
+    .box {
+      border: 2px solid #ccc;
+      padding: 20px;
+      background-color: #f9f9f9;
+      margin-top: 20px;
+    }
+    select, button {
+      margin-top: 10px;
+      padding: 8px;
+      font-size: 16px;
+    }
+    #timer {
+      font-size: 24px;
+      margin-top: 20px;
+      color: #e74c3c;
+    }
+    .input-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .input-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    input.digit {
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>타이틀: 자물쇠 비밀번호 풀기</h1>
+
+  <div class="box">
+    <h3>📘 지문</h3>
+    <p>
+      1부터 9까지의 숫자가 한 번씩 들어가는 4자리 암호가 있습니다.<br>
+      아래의 조건을 만족하는 비밀번호를 찾으세요.
+    </p>
+  </div>
+
+  <div class="box">
+    <h3>📌 규칙</h3>
+    <ul>
+      <li>조건1. 첫째 자리수는 5보다 작은 홀수이다.</li>
+      <li>조건2. 셋째 자리는 5보다 작은 짝수이다.</li>
+      <li>조건3. 둘째 자리와 셋째 자리는 연속된 수이다.</li>
+      <li>조건4. 넷째 자리수는 6 또는 8이다.</li>
+      <li>조건5. 첫째자리 + 넷째자리 = 둘째자리 + 셋째자리</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h3>❓ 문제</h3>
+    <p>위 조건을 모두 만족하는 4자리 자물쇠 비밀번호는 무엇일까요?</p>
+
+    <div class="input-row">
+      <div class="input-box">
+        <label>첫째</label>
+        <input type="text" maxlength="1" class="digit" />
+      </div>
+      <div class="input-box">
+        <label>둘째</label>
+        <input type="text" maxlength="1" class="digit" />
+      </div>
+      <div class="input-box">
+        <label>셋째</label>
+        <input type="text" maxlength="1" class="digit" />
+      </div>
+      <div class="input-box">
+        <label>넷째</label>
+        <input type="text" maxlength="1" class="digit" />
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <label for="timeSelect">⏱️ 시간 설정:</label>
+    <select id="timeSelect">
+      <option value="30">30초</option>
+      <option value="60">1분</option>
+      <option value="90">1분 30초</option>
+      <option value="120">2분</option>
+    </select>
+    <br>
+    <button onclick="startProblem()">문제 풀기</button>
+  </div>
+
+  <div id="timer"></div>
+
+  <script>
+    let countdown;
+    let remainingTime;
+
+    function startProblem() {
+      clearInterval(countdown);
+
+      const time = parseInt(document.getElementById("timeSelect").value);
+      remainingTime = time;
+
+      updateTimerDisplay();
+      countdown = setInterval(() => {
+        remainingTime--;
+        updateTimerDisplay();
+
+        if (remainingTime <= 0) {
+          clearInterval(countdown);
+          showTimeoutPopup();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const minutes = String(Math.floor(remainingTime / 60)).padStart(2, '0');
+      const seconds = String(remainingTime % 60).padStart(2, '0');
+      document.getElementById("timer").innerText = `⏳ 남은 시간: ${minutes}:${seconds}`;
+    }
+
+    function showTimeoutPopup() {
+      if (confirm("⏰ 시간이 종료되었습니다! 다시 도전하시겠습니까?")) {
+        startProblem();
+      }
+    }
+  </script>
+
+</body>
+</html>
