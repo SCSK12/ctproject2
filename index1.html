@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로봇 최단거리 청소하기</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 40px;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    select, button {
+      margin-top: 10px;
+      padding: 8px;
+      font-size: 16px;
+    }
+    .box {
+      border: 2px solid #ccc;
+      padding: 20px;
+      background-color: #f9f9f9;
+      margin-top: 10px;
+    }
+    #timer {
+      font-size: 24px;
+      margin-top: 20px;
+      color: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>타이틀: 로봇 최단거리 청소하기</h1>
+
+  <div class="box">
+    <h3>📘 지문</h3>
+    <p>
+      로봇 청소기가 5×5 격자 방 안에 있습니다. 현재 위치는 (0,0)입니다.<br>
+      방 안에는 장애물(X)과 쓰레기(G)가 있으며, 로봇은 한 번에 상, 하, 좌, 우로 한 칸만 움직일 수 있습니다.<br>
+      목표는 장애물을 피해 쓰레기(G)까지 가는 최소 이동 횟수를 구하는 것입니다.
+    </p>
+  </div>
+
+  <div class="box">
+    <h3>📌 규칙</h3>
+    <ul>
+      <li>로봇은 오직 상, 하, 좌, 우로만 이동 가능합니다.</li>
+      <li>장애물(X)은 통과할 수 없습니다.</li>
+      <li>목표는 쓰레기(G)까지의 최단 거리입니다.</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h3>❓ 문제</h3>
+    <pre>
+5×5 격자: (0,0)에서 시작
+
+S . . . .
+X . X . X
+. . . X .
+X X . . X
+. . X . G
+
+S: 시작, G: 쓰레기, X: 장애물
+
+최소 이동 횟수는?
+    </pre>
+  </div>
+
+  <div>
+    <label for="timeSelect">🕒 시간 설정: </label>
+    <select id="timeSelect">
+      <option value="30">30초</option>
+      <option value="60">1분</option>
+      <option value="90">1분 30초</option>
+      <option value="120">2분</option>
+    </select>
+    <br>
+    <button onclick="startProblem()">문제 풀기</button>
+  </div>
+
+  <div id="timer"></div>
+
+  <script>
+    let countdown;
+    let remainingTime;
+
+    function startProblem() {
+      clearInterval(countdown);
+
+      const time = parseInt(document.getElementById("timeSelect").value);
+      remainingTime = time;
+
+      updateTimerDisplay();
+      countdown = setInterval(() => {
+        remainingTime--;
+        updateTimerDisplay();
+
+        if (remainingTime <= 0) {
+          clearInterval(countdown);
+          showTimeoutPopup();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const minutes = String(Math.floor(remainingTime / 60)).padStart(2, '0');
+      const seconds = String(remainingTime % 60).padStart(2, '0');
+      document.getElementById("timer").innerText = `⏳ 남은 시간: ${minutes}:${seconds}`;
+    }
+
+    function showTimeoutPopup() {
+      if (confirm("⏰ 시간이 종료되었습니다! 다시 도전하시겠습니까?")) {
+        startProblem();
+      }
+    }
+  </script>
+
+</body>
+</html>
